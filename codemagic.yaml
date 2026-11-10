@@ -1,1 +1,23 @@
 
+workflows:
+  huangguo-android-debug:
+    name: Huangguo Android APK
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    environment:
+      java: 21
+
+    scripts:
+      - name: Configure Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+
+      - name: Build APK
+        script: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon :app:assembleDebug
+
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk
+
